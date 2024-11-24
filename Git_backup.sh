@@ -9,6 +9,7 @@ DATE=$(date +%d-%m-%Y_%H:%M:%S)
 LOG_FILE="/root/logs/Backup_$DATE.log"
 BACKUP_NAME="Backup_$DATE.tar.gz"
 ARCHIVE_PATH="/root/Archive/$BACKUP_NAME"
+cd "$( dirname "$0" )"
 
 #Creating log file
 touch "$LOG_FILE"
@@ -30,8 +31,8 @@ rsync -avz --delete "$ARCHIVE_PATH" "$TARGET_USER@$TARGET_IP:$TARGET_DIR" >> "$L
 #Cheking for an errors and sending mail
 if [ $? -eq 0 ]
 then
-	python3 Git_backup.py "Backup $DATE SUCCESS" "Backup is finished succsesfully. Data is safe. Chek files at the server"
+	/usr/bin/python3 "$( dirname "$0" )Git_backup.py" "Backup $DATE SUCCESS" "Backup is finished succsesfully. Data is safe. Chek files at the server"
 else
-	pyhton3 Git_backup.py "Backup $DATE FAIL" "Backup is finished with some error. Chek file at server"
+	/usr/bin/python3 "$( dirname "$0" )Git_backup.py" "Backup $DATE FAIL" "Backup is finished with some error. Chek file at server"
 fi
 
